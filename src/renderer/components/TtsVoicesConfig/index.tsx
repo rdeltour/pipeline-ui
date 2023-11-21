@@ -129,6 +129,13 @@ export function TtsVoicesConfigPane({
             setEnginesChecked(tmpEngines)
         }
     }
+    let changePriorityValue = (e, voice) => {
+        let tmpVoices = [...preferredVoices]
+        let idx = tmpVoices.findIndex((v) => v.id == voice.id)
+        tmpVoices[idx].priority = parseInt(e.target.value)
+        setPreferredVoices(tmpVoices)
+        onChangePreferredVoices(tmpVoices)
+    }
     let getAriaSortValue = (colName) => {
         return sortSettings.selected == colName
             ? sortSettings[colName] == 1
@@ -268,6 +275,42 @@ export function TtsVoicesConfigPane({
                                                     title={`Select ${v.name}`}
                                                     checked={checked}
                                                 />
+                                                {/* <label htmlFor={`${v.id}-prio`}>Preference strength</label> */}
+                                                { checked && <select
+                                                    id={`${v.id}-prio`}
+                                                    onChange={(e) =>
+                                                        changePriorityValue(
+                                                            e,
+                                                            v
+                                                        )
+                                                    }
+                                                >
+                                                    <option
+                                                        value="4"
+                                                        selected={
+                                                            v.priority == 4
+                                                        }
+                                                    >
+                                                        High
+                                                    </option>
+                                                    <option
+                                                        value="3"
+                                                        selected={
+                                                            v.priority != 4 &&
+                                                            v.priority != 2
+                                                        }
+                                                    >
+                                                        Medium
+                                                    </option>
+                                                    <option
+                                                        value="2"
+                                                        selected={
+                                                            v.priority == 2
+                                                        }
+                                                    >
+                                                        Low
+                                                    </option>
+                                                </select>}
                                             </td>
                                             <td>{v.name}</td>
                                             <td>{v.engine}</td>

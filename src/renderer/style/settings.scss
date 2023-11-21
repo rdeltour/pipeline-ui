@@ -1,7 +1,6 @@
 @use 'vars.scss' as *;
 
 $fieldHeight: 70vh;
-$engineColWidth: 8rem;
 
 .settings {
     display: flex;
@@ -152,10 +151,32 @@ $engineColWidth: 8rem;
         }
         td {
             width: min-content;
+            white-space: nowrap;
         }
-        // make this one a littie wider
+        // prefer
+        td:nth-child(1) {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            
+            select {
+                font-size: smaller;
+                border-radius: 10px;
+                padding: 2px;
+            }
+        }
+        // voice name
+        td:nth-child(2) {
+            max-width: 12rem;
+            white-space: normal;
+        }
+        // engine (make this one a little wider)
         td:nth-child(3) {
-            min-width: $engineColWidth;
+            min-width: 7rem;
+        }
+        // language
+        td:nth-child(4) {
+            max-width: 5rem;
         }
         tr:has(:checked) {
             background-color: var(--select-mix);
