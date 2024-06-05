@@ -5,6 +5,8 @@ import { useState, useEffect } from 'react'
 import { useWindowStore } from 'renderer/store'
 import { TtsConfig, TtsVoice } from 'shared/types/ttsConfig'
 import { Down, Up } from '../SvgIcons'
+import anyAscii from 'any-ascii'
+import { langcodeToScript } from './langcodeToScript'
 
 export function TtsVoicesConfigPane({
     availableVoices,
@@ -44,6 +46,15 @@ export function TtsVoicesConfigPane({
         tmpVoices.splice(idx, 1)
         setPreferredVoices(tmpVoices)
         onChangePreferredVoices(tmpVoices)
+    }
+
+    let getDisplayVoiceName = (voice) => {
+        // if the language code includes the script eg sr-Latn-RS we can extract it with Intl.Locale().script
+        // this is the most accurate identifier of the script especially in the case where a language could use several scripts
+        // otherwise use the langcodeToScript table
+        let locale = new Intl.Locale(voice.lang)
+        let script = locale.script ? locale.script : langcodeToScript[getLang(voice.lang)]
+        return script == 'Latn' ? voice.name : `${voice.name} (${anyAscii(voice.name)})`
     }
 
     // return the first part of the language code (e.g. 'en' for 'en-US')
@@ -301,7 +312,7 @@ export function TtsVoicesConfigPane({
                             .map((v: TtsVoice, idx) => (
                                 //@ts-ignore
                                 <option value={v.id} key={`voice-${v.id}`}>
-                                    {v.name}
+                                    {getDisplayVoiceName(v)}
                                 </option>
                             ))}
                     </select>
@@ -408,7 +419,7 @@ export function TtsVoicesConfigPane({
                                 .sort((a, b) => (a.name > b.name ? 1 : -1))
                                 .map((v, idx) => (
                                     <tr key={v.id}>
-                                        <td>{v.name}</td>
+                                        <td>{getDisplayVoiceName(v)}</td>
                                         <td>{v.engine}</td>
                                         <td>{languageNames.of(v.lang)}</td>
                                         <td>{v.gender}</td>

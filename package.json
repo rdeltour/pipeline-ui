@@ -60,6 +60,7 @@
     "@tanstack/react-query": "^4.2.1",
     "@types/marked": "^4.0.7",
     "@xmldom/xmldom": "^0.8.6",
+    "any-ascii": "^0.3.2",
     "chardet": "^1.5.1",
     "decompress": "^4.2.1",
     "electron-log": "^5.0.0",
