@@ -48,7 +48,7 @@ export function TtsVoicesConfigPane({
         onChangePreferredVoices(tmpVoices)
     }
 
-    let getDisplayVoiceName = (voice) => {
+    let getRomanizedVoiceName = (voice) => {
         // if the language code includes the script eg sr-Latn-RS we can extract it with Intl.Locale().script
         // this is the most accurate identifier of the script especially in the case where a language could use several scripts
         // otherwise use the langcodeToScript table
@@ -312,7 +312,7 @@ export function TtsVoicesConfigPane({
                             .map((v: TtsVoice, idx) => (
                                 //@ts-ignore
                                 <option value={v.id} key={`voice-${v.id}`}>
-                                    {getDisplayVoiceName(v)}
+                                    {getRomanizedVoiceName(v)}
                                 </option>
                             ))}
                     </select>
@@ -323,7 +323,7 @@ export function TtsVoicesConfigPane({
                     <>
                         <p>
                             <b>Selected</b>: "
-                            {availableVoices.find((v) => v.id == voiceId).name}
+                            {getRomanizedVoiceName(availableVoices.find((v) => v.id == voiceId))}
                             ",{' '}
                             {languageNames.of(
                                 availableVoices.find((v) => v.id == voiceId)
@@ -419,7 +419,7 @@ export function TtsVoicesConfigPane({
                                 .sort((a, b) => (a.name > b.name ? 1 : -1))
                                 .map((v, idx) => (
                                     <tr key={v.id}>
-                                        <td>{getDisplayVoiceName(v)}</td>
+                                        <td>{getRomanizedVoiceName(v)}</td>
                                         <td>{v.engine}</td>
                                         <td>{languageNames.of(v.lang)}</td>
                                         <td>{v.gender}</td>
